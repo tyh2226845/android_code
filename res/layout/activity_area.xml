@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/dlogin"
+    >
+   <TextView 
+       android:gravity="center"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/area_tv"
+       android:text="请按下SCAN键扫描所在仓库区域条码或二维码"
+       android:textSize="20sp"
+       android:textColor="#000000"
+       />
+    <EditText 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/area_et"
+        android:textSize="12sp"
+        android:ems="15"
+        android:background="@drawable/et_shape"
+        />
+   
+  
+    </LinearLayout>

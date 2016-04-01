@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/article_home"
+        android:icon="@drawable/home"
+        android:showAsAction="withText|always"
+        android:title="首页"/>
+    <item
+        android:id="@+id/article_add"
+        android:icon="@drawable/add"
+        android:showAsAction="withText|always"
+        android:title="添加"/>
+    <item
+        android:id="@+id/article_InOut"
+        android:icon="@drawable/doc_edit"
+        android:showAsAction="withText|always"
+        android:title="出/入"/>
+    <item
+        android:id="@+id/article_upload"
+        android:icon="@drawable/image_text"
+        android:showAsAction="withText|always"
+        android:title="上传"/>
+    <item
+        android:id="@+id/article_exit"
+        android:icon="@drawable/exit"
+        android:showAsAction="withText|always"
+        android:title="退出"/>
+
+</menu>

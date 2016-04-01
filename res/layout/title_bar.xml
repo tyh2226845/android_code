@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+     <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logo_B"
+            android:text="B"
+            android:textColor="#0c8918"
+            android:textSize="15sp"
+            android:textStyle="bold"
+      
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logo_i"
+            android:text="i"
+            android:textColor="#ffffff"
+            android:textSize="11sp"
+            android:textStyle="bold"
+ 
+            />
+         <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logo_z"
+            android:text="z"
+             android:textColor="#ffffff"
+            android:textSize="8sp"
+            android:textStyle="bold"
+    
+            />
+         <TextView 
+             android:paddingLeft="10dp"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="条码录入"
+              android:textColor="#ffffff"
+             android:textStyle="bold"
+             />
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    >
+ 
+    <TextView 
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/outworknumber_item_workId"
+        android:text="444444543"
+        android:textColor="#000000"
+        />
+    <TextView 
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/outworknumber_item_tv_client"
+        android:text="444444543"
+        android:textColor="#000000"
+        />
+       <TextView 
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="作业单号:"
+        android:layout_weight="1"
+        android:id="@+id/outworknumber_item_transPort"
+        android:textColor="#000000"
+        />
+</LinearLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="4dip"
+    android:paddingLeft="12dip"
+    android:paddingRight="12dip"
+    android:background="#ffffff" >
+
+   
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/in_menu"
+        android:text="1"
+        android:textColor="#000000"
+        />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/out_menu"
+        android:layout_below="@+id/in_menu"
+        android:text="2s"
+         android:textColor="#000000"
+        />
+      <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_txt"
+        android:layout_below="@+id/out_menu"
+        android:text="2s"
+         android:textColor="#000000"
+        />
+    <Button
+        android:id="@+id/btn_index1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="134dp"
+        android:background="@drawable/new_bt_in" />
+
+    <Button
+        android:id="@+id/btn_index3"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/btn_index1"
+        android:layout_marginTop="52dp"
+        android:layout_toLeftOf="@+id/btn_index4"
+        android:background="@drawable/new_bt_upload" />
+
+    <Button
+        android:id="@+id/btn_index2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignBaseline="@+id/btn_index1"
+        android:layout_alignBottom="@+id/btn_index1"
+        android:layout_alignLeft="@+id/btn_index4"
+        android:background="@drawable/new_bt_out" />
+
+    <Button
+        android:id="@+id/btn_index4"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignBaseline="@+id/btn_index3"
+        android:layout_alignBottom="@+id/btn_index3"
+        android:layout_marginLeft="38dp"
+        android:layout_toRightOf="@+id/btn_index1"
+        android:background="@drawable/new_bt_setting"
+         />
+
+    <Button
+        android:id="@+id/bth_index5"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_index3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/btn_login"
+        android:text="退出程序"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>

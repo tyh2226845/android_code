@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/dlogin" >
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+      <Button
+        android:id="@+id/btnforupload"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_shape_query"
+        android:text="上传" />
+       <Button
+           android:layout_marginLeft="10dp"
+        android:id="@+id/btnforclear"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_shape_query"
+        android:text="清理" />
+      <LinearLayout 
+          android:paddingLeft="50dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+          <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/in_upload_tv"
+              android:textColor="#000000"
+              android:text="已上传："
+              />
+          <TextView 
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/in_pupload_tv"
+              android:textColor="#000000"
+              android:text="待上传："
+              />
+      </LinearLayout>
+       
+</LinearLayout>
+  
+
+   
+
+    <ListView
+        android:id="@+id/listforupload"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+</LinearLayout>
