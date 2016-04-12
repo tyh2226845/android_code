@@ -12,6 +12,8 @@ import Code.DAO.ArticleDAO;
 import Code.DAO.SQLiteHelper;
 import Code.Entites.Article;
 import Code.UI.OutUploadListViewAdapter.ChangeTextListener;
+import Code.Util.HttpConnSoap_list;
+import Code.Util.T;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -188,87 +190,122 @@ public class OutUploadActivity extends BaseActivity  {
 		finish();
 	}
 
-	class UploadAsyncTask extends AsyncTask<List<Article>, Integer, Integer> {
+	class UploadAsyncTask extends AsyncTask<List<Article>, Integer, Boolean> {
 
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			dialog.show();
 		}
-		@Override
-		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
-			dialog.dismiss();
-			SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
-			SQLiteDatabase db = sqLiteHelper.getReadableDatabase();
-			ArticleDAO articleDao = new ArticleDAO();
-			articles = articleDao.GetAllArticles_out(db);
-			OutUploadActivity.this.adapter.onDataChange(articles);
-			OutUploadActivity.this.setNum();
-			switch (result) {
-			case 0:
-				
-				Toast.makeText(OutUploadActivity.this, "上传成功！",
-						Toast.LENGTH_SHORT).show();
-				break;
-
-			case 1:
-				
-				Toast.makeText(OutUploadActivity.this, "上传失败！请重新上传",
-						Toast.LENGTH_SHORT).show();
-				break;
-			}
-		}
+//		@Override
+//		protected void onPostExecute(Integer result) {
+//			// TODO Auto-generated method stub
+//			dialog.dismiss();
+//			SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
+//			SQLiteDatabase db = sqLiteHelper.getReadableDatabase();
+//			ArticleDAO articleDao = new ArticleDAO();
+//			articles = articleDao.GetAllArticles_out(db);
+//			OutUploadActivity.this.adapter.onDataChange(articles);
+//			OutUploadActivity.this.setNum();
+//			switch (result) {
+//			case 0:
+//				
+//				Toast.makeText(OutUploadActivity.this, "上传成功！",
+//						Toast.LENGTH_SHORT).show();
+//				break;
+//
+//			case 1:
+//				
+//				Toast.makeText(OutUploadActivity.this, "上传失败！请重新上传",
+//						Toast.LENGTH_SHORT).show();
+//				break;
+//			}
+//		}
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			// TODO Auto-generated method stub
 			super.onProgressUpdate(values);
 			dialog.setProgress(values[0]);
 		}
-		@Override
-		protected Integer doInBackground(List<Article>... arg0) {
-			// TODO Auto-generated method stub
-			int progress_state = 0;
-			for (Article article : articles) {
-				publishProgress((int)(progress_state*100)/maxProgress);
-				progress_state++;
-				String code = article.getName();
-				String state = article.getContent();
-				String outWID = article.getWID();
-				Log.i("WID",outWID);
-					// TODO Auto-generated method stub
-					SoapObject rpc = new SoapObject("http://tempuri.org/",
-							"insertOutCode");
-					rpc.addProperty("code", code);
-					rpc.addProperty("state", state);
-					rpc.addProperty("outWID", outWID);
-					rpc.addProperty("user", user);
-					SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-							SoapEnvelope.VER11);
-					envelope.dotNet = true;
-					envelope.setOutputSoapObject(rpc);
-					HttpTransportSE transport = new HttpTransportSE(
-							urlData); 
-					try {
-						// 调用WebService
-						transport.call("http://tempuri.org/insertOutCode",
-								envelope);
-					} catch (Exception e) {
-//						e.printStackTrace();
-						return 1;	
-					}
-					SQLiteHelper sqLiteHelper = new SQLiteHelper(
-							getApplicationContext());
-					ArticleDAO articleDao = new ArticleDAO();
-					article.setName(code);
-					article.setContent("3");
-					article.setDate(new Date());
-					SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
-					articleDao.UpdateArticle_out(db, article);
-					db.close();
-			}
-			return 0;
-		}
+//		@Override
+//		protected Integer doInBackground(List<Article>... arg0) {
+//			// TODO Auto-generated method stub
+//			int progress_state = 0;
+//			for (Article article : articles) {
+//				publishProgress((int)(progress_state*100)/maxProgress);
+//				progress_state++;
+//				String code = article.getName();
+//				String state = article.getContent();
+//				String outWID = article.getWID();
+//				Log.i("WID",outWID);
+//					// TODO Auto-generated method stub
+//					SoapObject rpc = new SoapObject("http://tempuri.org/",
+//							"insertOutCode");
+//					rpc.addProperty("code", code);
+//					rpc.addProperty("state", state);
+//					rpc.addProperty("outWID", outWID);
+//					rpc.addProperty("user", user);
+//					SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+//							SoapEnvelope.VER11);
+//					envelope.dotNet = true;
+//					envelope.setOutputSoapObject(rpc);
+//					HttpTransportSE transport = new HttpTransportSE(
+//							urlData); 
+//					try {
+//						// 调用WebService
+//						transport.call("http://tempuri.org/insertOutCode",
+//								envelope);
+//					} catch (Exception e) {
+////						e.printStackTrace();
+//						return 1;	
+//					}
+//					SQLiteHelper sqLiteHelper = new SQLiteHelper(
+//							getApplicationContext());
+//					ArticleDAO articleDao = new ArticleDAO();
+//					article.setName(code);
+//					article.setContent("3");
+//					article.setDate(new Date());
+//					SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
+//					articleDao.UpdateArticle_out(db, article);
+//					db.close();
+//			}
+//			return 0;
+//		}
+@Override
+protected Boolean doInBackground(List<Article>... params) {
+	// TODO Auto-generated method stub
+	boolean result = false;
+	HttpConnSoap_list hcl = new HttpConnSoap_list();
+	result =  hcl.paraseResult(hcl.GetWebServer_out("insertOutCodeList", params[0], urlData, user));
+	Log.i("result-1", result+"");
+	if (result) {
+		SQLiteHelper sqLiteHelper = new SQLiteHelper(
+				getApplicationContext());
+		ArticleDAO articleDao = new ArticleDAO();
+		SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
+		result = articleDao.updateArticle_out_tran(db, params[0]);
+		db.close();
+	}
+	Log.i("result-2", result+"");
+	return result;
+}
+
+@Override
+protected void onPostExecute(Boolean result) {
+	// TODO Auto-generated method stub
+	dialog.dismiss();
+	SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
+	SQLiteDatabase db = sqLiteHelper.getReadableDatabase();
+	ArticleDAO articleDao = new ArticleDAO();
+	articles = articleDao.GetAllArticles_out(db);
+	OutUploadActivity.this.adapter.onDataChange(articles);
+	OutUploadActivity.this.setNum();
+	if (result) {
+		T.showShort(OutUploadActivity.this, "上传成功！");
+	} else {
+		T.showLong(OutUploadActivity.this, "上传失败！请检查网络是否顺畅");
+	}
+}
 		
 	}
 }

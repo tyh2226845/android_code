@@ -12,6 +12,8 @@ import Code.DAO.ArticleDAO;
 import Code.DAO.SQLiteHelper;
 import Code.Entites.Article;
 import Code.UI.UploadListViewAdapter.ChangeTextListener;
+import Code.Util.HttpConnSoap_list;
+import Code.Util.T;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -190,15 +192,109 @@ public class UploadActivity extends BaseActivity  {
 		finish();
 	}
 
-	class UploadAsyncTask extends AsyncTask<List<Article>, Integer, String> {
+	class UploadAsyncTask extends AsyncTask<List<Article>, Integer, Boolean> {
 
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			dialog.show();
 		}
+//		protected void onPostExecute(boolean result) {
+//			// TODO Auto-generated method stub
+//			dialog.dismiss();
+//			SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
+//			SQLiteDatabase db = sqLiteHelper.getReadableDatabase();
+//			ArticleDAO articleDao = new ArticleDAO();
+//			articles = articleDao.GetAllArticles(db);
+//			UploadActivity.this.adapter.onDataChange(articles);
+//			UploadActivity.this.setNum();
+//			if (result.equals("true")) {
+//				
+//				Toast.makeText(UploadActivity.this, "上传成功！",
+//						Toast.LENGTH_SHORT).show();
+//			} else {
+//				Toast.makeText(UploadActivity.this, "上传失败！请重新上传",
+//						Toast.LENGTH_SHORT).show();
+//			}
+////			
+//		}
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onProgressUpdate(Integer... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+			dialog.setProgress(values[0]);
+		}
+//		@Override
+//		protected String doInBackground(List<Article>... arg0) {
+//			// TODO Auto-generated method stub
+//			HttpConnSoap_list hcs = new HttpConnSoap_list();
+//			boolean result = hcs.GetWebServer("insertCode_List", arg0[0], urlData, user);
+//			return "";
+////			String result ="";
+////			int progress_state = 0;
+////			for (Article article : articles) {
+////				publishProgress((progress_state*100)/maxProgressLenght);
+////				progress_state++;
+////				String code = article.getName();
+////				String state = article.getContent();
+////				String arcode = article.getArcode();
+////					// TODO Auto-generated method stub
+////					SoapObject rpc = new SoapObject("http://tempuri.org/",
+////							"insertCode");
+////					rpc.addProperty("code", code);
+////					rpc.addProperty("state", state);
+////					rpc.addProperty("user", user);
+////					rpc.addProperty("arcode", arcode);
+////					SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+////							SoapEnvelope.VER11);
+////					envelope.dotNet = true;
+////					envelope.setOutputSoapObject(rpc);
+////					HttpTransportSE transport = new HttpTransportSE(
+////							urlData); 
+//////					SumString
+//////					insertCode
+////					try {
+////						// 调用WebService
+////						transport.call("http://tempuri.org/insertCode",
+////								envelope);
+////					} catch (Exception e) {
+//////						e.printStackTrace();
+////						return "false";	
+////					}
+////					SoapObject object = (SoapObject) envelope.bodyIn;
+////					result = object.getProperty(0).toString();
+////					SQLiteHelper sqLiteHelper = new SQLiteHelper(
+////							getApplicationContext());
+////					ArticleDAO articleDao = new ArticleDAO();
+////					article.setName(code);
+////					article.setContent("3");
+////					article.setDate(new Date());
+////					SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
+				//	articleDao.UpdateArticle(db, article);
+////					db.close();					
+////			}
+////			return result;
+//		}
+		@Override
+		protected Boolean doInBackground(List<Article>... params) {
+			// TODO Auto-generated method stub
+			boolean result = false;
+			HttpConnSoap_list hcs = new HttpConnSoap_list();
+			result = hcs.paraseResult(hcs.GetWebServer("insertCodeList", params[0], urlData, user));
+			Log.i("result-1", result+"");
+			if (result) {
+			SQLiteHelper sqLiteHelper = new SQLiteHelper(
+			getApplicationContext());
+			ArticleDAO articleDao = new ArticleDAO();
+			SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
+			result = articleDao.UpdateTran(db, params[0]);
+			db.close();					
+			}
+			Log.i("result-2", result+"");
+			return result;
+		}
+		@Override
+		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			dialog.dismiss();
 			SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
@@ -207,69 +303,11 @@ public class UploadActivity extends BaseActivity  {
 			articles = articleDao.GetAllArticles(db);
 			UploadActivity.this.adapter.onDataChange(articles);
 			UploadActivity.this.setNum();
-			if (result.equals("true")) {
-				
-				Toast.makeText(UploadActivity.this, "上传成功！",
-						Toast.LENGTH_SHORT).show();
+			if (result) {
+				T.showShort(UploadActivity.this, "上传成功！");
 			} else {
-				Toast.makeText(UploadActivity.this, "上传失败！请重新上传",
-						Toast.LENGTH_SHORT).show();
+				T.showLong(UploadActivity.this, "上传失败！请检查网络是否通畅");
 			}
-//			
-		}
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			// TODO Auto-generated method stub
-			super.onProgressUpdate(values);
-			dialog.setProgress(values[0]);
-		}
-		@Override
-		protected String doInBackground(List<Article>... arg0) {
-			// TODO Auto-generated method stub
-			String result ="";
-			int progress_state = 0;
-			for (Article article : articles) {
-				publishProgress((progress_state*100)/maxProgressLenght);
-				progress_state++;
-				String code = article.getName();
-				String state = article.getContent();
-				String arcode = article.getArcode();
-					// TODO Auto-generated method stub
-					SoapObject rpc = new SoapObject("http://tempuri.org/",
-							"insertCode");
-					rpc.addProperty("code", code);
-					rpc.addProperty("state", state);
-					rpc.addProperty("user", user);
-					rpc.addProperty("arcode", arcode);
-					SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-							SoapEnvelope.VER11);
-					envelope.dotNet = true;
-					envelope.setOutputSoapObject(rpc);
-					HttpTransportSE transport = new HttpTransportSE(
-							urlData); 
-//					SumString
-//					insertCode
-					try {
-						// 调用WebService
-						transport.call("http://tempuri.org/insertCode",
-								envelope);
-					} catch (Exception e) {
-//						e.printStackTrace();
-						return "false";	
-					}
-					SoapObject object = (SoapObject) envelope.bodyIn;
-					result = object.getProperty(0).toString();
-					SQLiteHelper sqLiteHelper = new SQLiteHelper(
-							getApplicationContext());
-					ArticleDAO articleDao = new ArticleDAO();
-					article.setName(code);
-					article.setContent("3");
-					article.setDate(new Date());
-					SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
-					articleDao.UpdateArticle(db, article);
-					db.close();					
-			}
-			return result;
 		}
 		
 	}

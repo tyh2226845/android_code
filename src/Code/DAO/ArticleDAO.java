@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import Code.Entites.Article;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -575,6 +576,33 @@ public class ArticleDAO {
 			}
 		}
 	}
+	
+	public boolean updateArticle_out_tran(SQLiteDatabase db,List<Article> list){
+		boolean flag = false;
+		if (db.isOpen()) {
+		
+			db.beginTransaction();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			Date date = new Date();
+			try {
+				for (Article article : list) {
+					ContentValues values = new ContentValues();
+					values.put("content", "3");
+					values.put("date", sdf.format(date));
+					db.update("articles_out", values, "name='"+article.getName()+"'", null);
+				}
+				db.setTransactionSuccessful();
+				flag = true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				flag = false;
+			} finally {
+				db.endTransaction();
+			}		
+		}
+		return flag;
+		
+	}
 //	更新至已校验文章
 //	更新至已上传
 
@@ -725,6 +753,32 @@ public class ArticleDAO {
 //				db.close();
 			}
 		}
+	}
+	
+	public boolean UpdateTran(SQLiteDatabase db,List<Article> list){
+		boolean flag = false;
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				"yyyy-MM-dd hh:mm:ss");
+		Date now = new Date();
+		if (db.isOpen()) {
+			db.beginTransaction();
+			try {
+				for (Article article : list) {		
+					ContentValues values = new ContentValues();
+					values.put("content", "3");
+					values.put("date", sdf.format(now));	
+					db.update("articles", values, "name='"+article.getName()+"'", null);
+				}
+				db.setTransactionSuccessful();
+				flag = true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				flag = false;
+			} finally{
+				db.endTransaction();
+			}
+		}
+		return flag;
 	}
 
 }

@@ -21,6 +21,15 @@ public class Article {
 		this.WID = WID;
 	}
 
+	private String user;
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	private int id;
 	private String name;
 	private String content;

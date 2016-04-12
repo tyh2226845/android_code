@@ -16,7 +16,6 @@ public class HttpConnSoap {
 		//4124是指端口号，即挂载到IIS上的时候开启的端口
 		//Service1.asmx是指提供服务的页面
 		String ServerUrl = "http://192.168.28.200:80/Service1.asmx";
-		
 		//String soapAction="http://tempuri.org/LongUserId1";
 		String soapAction = "http://tempuri.org/" + methodName;
 		//String data = "";
