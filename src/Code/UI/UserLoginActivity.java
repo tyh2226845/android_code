@@ -202,9 +202,7 @@ public class UserLoginActivity extends BaseActivity{
 			editor.commit();
 			db.close();
 			return null;
-		}
-
-	
+		}	
 	}
 	
 	 

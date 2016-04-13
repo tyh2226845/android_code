@@ -4,7 +4,7 @@ public class Data {
 
 	private String version = "version:1.3.1";
 	//private String urlData = "http://192.168.8.64/WuHan3/";
-	private String urlData = "http://192.168.15.61/Service1.asmx";
+ private String urlData = "http://192.168.15.61/Service1.asmx";
 	private String user;
 
 	public String getUser() {

@@ -40,7 +40,6 @@ public class AreaAddActivity extends BaseActivity{
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case SUCCESS:
-				Arcode_area = Arcode;
 				area_et.setText("");
 				AreaAsyncTask asyncTask = new AreaAsyncTask();
 				asyncTask.execute();
@@ -77,6 +76,7 @@ public class AreaAddActivity extends BaseActivity{
 				// TODO Auto-generated method stub
 				Arcode = area_et.getText()+"";
 				if (!TextUtils.isEmpty(Arcode)&&isNull(Arcode)) {
+					Arcode_area = Arcode;
 				Message message = handler.obtainMessage();
 				message.what = SUCCESS;
 				handler.sendMessage(message);
