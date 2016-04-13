@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import Code.Entites.Article;
+import Code.Entites.UserInfo;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -779,6 +780,79 @@ public class ArticleDAO {
 			}
 		}
 		return flag;
+	}
+	
+	public int GetUserCount(SQLiteDatabase db){
+		int i = -1;
+		if (db.isOpen()) {
+			try {
+				String sql = "select * from user_info";
+				Cursor cursor = db.rawQuery(sql, null);
+				i = cursor.getCount();
+				cursor.close();
+				cursor.deactivate();
+			} catch (Exception e) {
+				// TODO: handle exception
+			} 
+		}
+		return i;
+	}
+	
+	public boolean InsertUserInfo(SQLiteDatabase db,List<UserInfo> list){
+		boolean flag = false;
+		if (db.isOpen()) {
+			db.beginTransaction();
+			try {
+				for (UserInfo userInfo : list) {
+					ContentValues values = new ContentValues();
+					values.put("username", userInfo.username);
+					values.put("password", userInfo.password);
+					values.put("usercode", userInfo.usercode);
+					db.insert("user_info", null, values);
+				}
+				db.setTransactionSuccessful();
+				flag = true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				flag = false;
+			} finally{
+				db.endTransaction();
+			}
+		}
+		return flag;
+	}
+	
+	public boolean DeleteAllUserInfo(SQLiteDatabase db){
+		boolean flag = false;
+		if (db.isOpen()) {
+			try {
+				db.execSQL("delete from user_info");
+				flag = true;
+			} catch (Exception e) {
+				// TODO: handle exception				
+			}
+		
+		}
+		return flag;
+	}
+	
+	public String[] GetUserPassword(SQLiteDatabase db,String usercode){
+		String[] userinfo = new String[2];
+		if (db.isOpen()) {			
+			try {
+				String sql = "select password,username from user_info where usercode='"+usercode+"'";
+				Cursor cursor = db.rawQuery(sql, null);
+				while (cursor.moveToNext()) {
+					userinfo[0] = cursor.getString(cursor.getColumnIndex("password"));
+					userinfo[1] = cursor.getString(cursor.getColumnIndex("username"));
+				}
+				cursor.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return userinfo;
+		
 	}
 
 }

@@ -13,34 +13,18 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import Code.Entites.PlanarWorkOut;
+import Code.Entites.UserInfo;
 import android.util.Xml;
 
 public class HttpConnSoap2 {
-	private List<PlanarWorkOut> mList ;
-	public   InputStream GetWebServer (String methodName,String urlData) {
+	private List<PlanarWorkOut> mList ;	
+	public InputStream GetWebServer (String methodName,String urlData) {
 		String serverUrl = urlData;
 		String soapAction = "http://tempuri.org/" +methodName;
-		
 		String soap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
 		+"<soap:Body>";
-		String bps = "CBean";
-		String bps1 = "beans";
-		String tps="workId",tps2="client",tps3="tranSport";
-		String vps,vps2,vps3;
-		String ts;
 		String mreakString = "";
 		mreakString = "<"+methodName+" xmlns=\"http://tempuri.org/\">";
-//		for (int i = 0; i < Parameters.size(); i++) {
-//			PlanarWorkOut pwk = new PlanarWorkOut();
-//			pwk = Parameters.get(i);
-//			vps = pwk.getWorkId();
-//			vps2 = pwk.getClient();
-//			vps3 = pwk.getTranSport()+"";
-//			ts = "<"+bps1+">"+"<"+bps+">"+"<"+tps+">"+vps+"</"+tps+">"
-//			+"<"+tps2+">"+vps2+"</"+tps2+">"+
-//			"<"+tps3+">"+vps3+"</"+tps3+">"+"</"+bps+">"+"</"+bps1+">";
-//			mreakString+=ts;
-//		}
 		mreakString +="</"+methodName+">";
 		String soap2 = "</soap:Body>"+"</soap:Envelope>";
 		String requestData = soap+mreakString+soap2;
@@ -66,14 +50,6 @@ public class HttpConnSoap2 {
 			
 			InputStream is = con.getInputStream();
 			System.out.println("is:"+is);
-//			mList = paraseC(is);
-//			System.out.println("mList:"+mList+"");
-//			inputStreamtovaluelist(is, methodName);
-//			StringBuffer sb = new StringBuffer();
-//			String str = "";
-//			while () {
-//				
-//			}
 			return is;
 		}  catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -81,21 +57,6 @@ public class HttpConnSoap2 {
 			return null;
 		}
 	}
-		public String inputStreamtovaluelist(InputStream in, String MonthsName) throws IOException {
-			StringBuffer out = new StringBuffer();
-			byte[] b = new byte[4096];
-			String s1 ="";
-			ArrayList<String> Values = new ArrayList<String>();
-			Values.clear();
-			
-			for (int n ; (n=in.read(b))!=-1; ) {
-				s1 = new String(b,0,n);
-				out.append(s1);
-			}
-			System.out.println("Values:"+out+"333");
-			
-			return out+"";
-		}
 		
 		public  List<PlanarWorkOut> paraseC (InputStream inputStream) {
 			List<PlanarWorkOut> list = null;
@@ -150,6 +111,60 @@ public class HttpConnSoap2 {
 			System.out.println("list:"+list.get(0).getWorkId()+"");
 			return list;
 		}
+		
+		public  List<UserInfo> parase_userInfo (InputStream inputStream) {
+			List<UserInfo> list = null;
+			UserInfo bean = null ;
+			XmlPullParser parser = Xml.newPullParser();
+			System.out.println("inputStream:"+inputStream);
+			try {
+				parser.setInput(inputStream, "utf-8");
+				int eventType = parser.getEventType();
+				while (eventType!=XmlPullParser.END_DOCUMENT) {
+					switch (eventType) {
+					case XmlPullParser.START_DOCUMENT:
+						list = new ArrayList<UserInfo>();
+						break;
+					case XmlPullParser.START_TAG:
+						String name = parser.getName();
+						if (name.equalsIgnoreCase("UserInfo")) {
+							bean = new UserInfo();
+						} else if (name.equalsIgnoreCase("username")) {
+							eventType = parser.next();
+							bean.setUsername(parser.getText()+"");
+							System.out.println("parser:"+parser.getText()+"");
+						} else if (name.equalsIgnoreCase("password")) {
+							eventType = parser.next();
+							bean.setPassword(parser.getText()+"");
+							System.out.println("parser:"+parser.getText()+"");
+						} else if (name.equalsIgnoreCase("usercode")) {
+							eventType = parser.next();
+							bean.setUsercode(parser.getText()+"");
+							System.out.println("parser:"+parser.getText()+"");
+						}
+						break;
+					case XmlPullParser.END_TAG:
+						if (parser.getName().equalsIgnoreCase("UserInfo")) {
+							list.add(bean);
+							bean = null;
+						}
+						break;
+					}
+					eventType = parser.next();
+				}
+				inputStream.close();
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		//	System.out.println("list:"+list.get(0).getWorkId()+"");
+			return list;
+		}
+		
+		
 		public synchronized ArrayList<String> inputStreamtovaluelistnum(InputStream in, String MonthsName) throws IOException {
 			StringBuffer out = new StringBuffer();
 			byte[] b = new byte[4096];

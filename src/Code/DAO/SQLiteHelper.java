@@ -23,7 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	/**
 	 * °æ±¾ºÅ
 	 */
-	private static final int version = 4;
+	private static final int version = 5;
 
 	public SQLiteHelper(Context context) {
 		super(context, dbName, null, version);
@@ -59,6 +59,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("create table work_number("
 				+ " id integer primary key autoincrement,"
 				+ " name nvarchar(40) not null)" );
+		db.execSQL("create table user_info("
+				+"id integer primary key autoincrement,"
+				+"usercode nvarchar(50) ,"
+				+"password nvarchar(50) ,"
+				+"username nvarchar(50) )"
+				);
 	}
 
 	/**
@@ -67,7 +73,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		switch (oldVersion) {
-		default:				
+		case 4:		
+			db.execSQL("create table user_info("
+					+"id integer primary key autoincrement,"
+					+"usercode nvarchar(50) ,"
+					+"password nvarchar(50) ,"
+					+"username nvarchar(50) )"
+					);
 		}
 	}
 
